@@ -1,0 +1,40 @@
+{% extends "pages/base.html" %}
+
+{% if user.is_authenticated %}
+<meta http-equiv="refresh" content="0; url={% url 'pages:index' %}">
+{% endif %}
+
+{% block content %}
+
+<form class="pure-form pure-form-stacked" action="" enctype="multipart/form-data" method="post">
+<!--form action="//httpbin.org/post" enctype="multipart/form-data" method="post"-->
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div class="fieldWrapper">
+            <div class="error">{{ field.errors }}</div>
+            <div>
+                {% if field.field.widget.input_type == "file" %}
+                <div id="preview">
+                    <img class="tiny" src="{% url 'pages:preview' id %}" />
+                </div>
+                {% endif %}
+                {{ field.label_tag }} {{ field }}
+            </div>
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+        
+    {% endfor %}
+
+    <input type='submit' value='Save'>
+</form>
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.8.1/trumbowyg.min.js"></script>
+<script type="text/javascript">
+$('[name="content"]').trumbowyg();
+</script>
+-->
+{% endblock %}

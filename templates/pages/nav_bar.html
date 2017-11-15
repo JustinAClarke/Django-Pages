@@ -1,0 +1,5 @@
+<ul class="pure-menu-children">
+    {% for nav in navs %}
+    <li class="pure-menu-item"><a class="pure-menu-link" href="{{ nav.url }}">{{ nav.title }}</a></li>
+    {% endfor %}
+</ul>

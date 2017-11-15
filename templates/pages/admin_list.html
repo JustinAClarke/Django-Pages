@@ -1,0 +1,42 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+<ul>
+    <li><a href="#pages">Quick Jump to Pages</a></li>
+    <li><a href="#nav">Quick Jump to Nav Bar</a></li>
+</ul>
+
+
+    <a id="pages" href="{% url 'pages:add_page' %}">Add new Page</a>
+    <ul>
+    {% for page in pages %}
+        <li>
+            <a href="{% url 'pages:edit_page' page.id %}">{{ page }}</a> - <a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:delete_page' page.id %}">Delete</a>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <a id="nav" href="{% url 'pages:add_nav' %}">Add new Nav Item</a>
+    <ul>
+    {% for nav in navs %}
+        <li>
+            <a href="{% url 'pages:edit_nav' nav.id %}">{{ nav }}</a> - <a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:delete_nav' nav.id %}">Delete</a>
+        </li>
+    {% endfor %}
+    </ul>
+
+<style>
+    .delete{
+    
+    }
+</style>
+
+<script>
+    
+    function checkdelete(event){
+        if (!confirm('Are you sure you want to delete?')) {
+            event.preventDefault();
+        }
+    }
+</script>
+{% endblock %}
