@@ -50,6 +50,8 @@
                 {% if user.is_authenticated %}
                 <li class="pure-menu-item"><a class="nav pure-menu-link" href="{% url 'pages:admin_list' %}">Admin</a></li>
                 {% endif %}
+                
+                <li class="pure-menu-item"><a class="nav pure-menu-link" href="{% url 'pages:contact' %}">Contact</a></li>
 
             </ul>
             {% endblock %}
@@ -59,12 +61,14 @@
         <div id="content">
             {% block content %}{% endblock %}
         </div>
+    
+        <div id="footer">
+            {% include "footer.html" %}
+            
+        </div>
     </div>
+
     <script type="text/javascript" src="{% static 'pages/js/main.js' %}" ></script>
-    <div id="footer">
-        {% include "footer.html" %}
-        
-    </div>
     {% include "scripts.html" %}
 </body>
 </html>

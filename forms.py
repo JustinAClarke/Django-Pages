@@ -16,7 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     """
 from django.forms import ModelForm
-from .models import Nav, Page
+from django import forms
+from .models import Nav, Page, Contact
 
 
 
@@ -31,3 +32,16 @@ class NavForm(ModelForm):
         model = Nav
         fields = '__all__'
         #fields = [ 'Title' ]
+
+
+class ContactForm(ModelForm):
+    email = forms.CharField(required=False)
+    phone = forms.CharField(required=False)
+    class Meta:
+        model = Contact
+        #fields = '__all__'
+        fields = ['name',
+            'subject',
+            'email',
+            'phone',
+            'note',]

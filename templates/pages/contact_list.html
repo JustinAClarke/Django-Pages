@@ -1,0 +1,28 @@
+{% extends "pages/base.html" %}
+
+
+{% if not user.is_authenticated %}
+<meta http-equiv="refresh" content="0; url={% url 'pages:index' %}">
+{% endif %}
+
+{% block content %}
+
+<ul>
+{% for entry in contacts %}
+    <li>
+        <a href="{% url 'pages:contact_view' entry.id %}">{{ entry.date }}</a> - <a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:contact_delete' entry.id %}">Delete</a>
+    </li>
+{% empty %}
+    <li>No Contacts</li>
+{% endfor %}
+</ul>
+
+<script>
+    
+    function checkdelete(event){
+        if (!confirm('Are you sure you want to delete?')) {
+            event.preventDefault();
+        }
+    }
+</script>
+{% endblock %}

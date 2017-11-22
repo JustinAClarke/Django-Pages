@@ -15,9 +15,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     """
+from django.core.mail import send_mail, BadHeaderError
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.contrib import messages
+from django.template.loader import render_to_string
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+import datetime
 
 # Create your views here.
 
@@ -131,6 +135,56 @@ def delete_page(request,id):
     page.delete()
     return HttpResponseRedirect(reverse('pages:admin_list'))
     
+    
+    
+def contact(request):
+    if request.method == "POST":
+        contact = ContactForm(request.POST) # A form bound to the POST data
+        if contact.is_valid(): # All validation rules pass
+            new_contact = contact.save()
+            #send email
+            context = {
+                'time': datetime.datetime.now().isoformat(),
+                'name': contact.cleaned_data['name'],
+                'subject': contact.cleaned_data['subject'],
+                'email': contact.cleaned_data['email'],
+                'phone': contact.cleaned_data['phone'],
+                'note': contact.cleaned_data['note'],
+            }
+            message = render_to_string('pages/email.html', context)
+            try:
+                send_mail("Website Contact Us", message, "website@justin.fuhrmeister-clarke.com", ['info@justin.fuhrmeister-clarke.com'])
+            except BadHeaderError:
+                messages.add_message(request, messages.ERROR, 'form Submission Failed')
+                return HttpResponseRedirect(reverse('pages:contact'))
+                #return HttpResponse('Invalid header found.')
+            
+            messages.add_message(request, messages.INFO, 'Form submission success')
+            return HttpResponseRedirect(reverse('pages:index'))
+    else:
+        contact = ContactForm()
+    context = {'title':getTitle(), 'request': request,'form':contact}
+    return render(request, 'pages/contact.html', context)
+
+
+def contact_list(request):
+    contacts = Contact.objects.all().order_by('id')
+    context = {'title':getTitle(), 'request': request,'contacts':contacts}
+    return render(request, 'pages/contact_list.html', context)
+    
+    
+def contact_view(request,id):
+    contact = get_object_or_404(Contact, pk=id)
+    context = {'title':getTitle(), 'request': request,'contact':contact}
+    return render(request, 'pages/contact_view.html', context)
+    
+def contact_delete(request,id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('pages:index'))
+    contact = get_object_or_404(Contact, pk=id)
+    contact.delete()
+    return HttpResponseRedirect(reverse('pages:contact_list'))
+
 def test(request):
     context = {'title':getTitle(),'request': request}
     return render(request, 'pages/index.html', context)

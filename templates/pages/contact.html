@@ -1,0 +1,41 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+
+<div class="pure-u-md-1-2 half-and-half">
+<a href="mailto:justin@fuhrmeister-clarke.com">Email</a>
+<a href="tel:+61457342051">Call</a>
+</div>
+
+<div class="pure-u-md-1-2 half-and-half">
+    <form class="pure-form pure-form-stacked" action="" enctype="multipart/form-data" method="post">
+    <!--form action="//httpbin.org/post" enctype="multipart/form-data" method="post"-->
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="fieldWrapper">
+                <div class="error">{{ field.errors }}</div>
+                <div>
+                    {{ field.label_tag }} {{ field }}
+                </div>
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+            
+        {% endfor %}
+
+        <input type='submit' value='Send'>
+    </form>
+</div>
+
+<style>
+    .half-and-half{
+        width:50%;
+    }
+</style>
+<script>
+    
+</script>
+{% endblock %}
+

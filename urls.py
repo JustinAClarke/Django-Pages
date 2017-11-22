@@ -17,12 +17,17 @@
     """
     
 from django.conf.urls import url
+from django.views.generic.base import RedirectView
+
 
 from pages import views
 
 app_name = 'pages'
 
 urlpatterns = [
+    #favicon
+    url(r'^favicon\.ico$', RedirectView.as_view(url='/static/pages/image/favicon.svg', permanent=True)),
+
     # ex: /pages/
     url(r'^$', views.index, name='index'),
 
@@ -51,6 +56,19 @@ urlpatterns = [
     # ex: /pages/nav/delete/
     url(r'^nav/delete/(?P<id>[0-9]+)/$', views.delete_nav, name='delete_nav'),
 
+    # ex: /pages/contact/
+    url(r'^contact/$', views.contact, name='contact'),
+    
+    # ex: /pages/contact/list
+    url(r'^contact/list$', views.contact_list, name='contact_list'),
+    
+    # ex: /pages/contact/view
+    url(r'^contact/view/(?P<id>[0-9]+)/$', views.contact_view, name='contact_view'),
+    
+    # ex: /pages/contact/view
+    url(r'^contact/delete/(?P<id>[0-9]+)/$', views.contact_delete, name='contact_delete'),
+
     url(r'^test/(?P<page>[0-9]+)/$', views.test, name='test'),
     
 ]
+

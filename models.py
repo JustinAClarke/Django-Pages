@@ -35,3 +35,17 @@ class Nav(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=256)
+    subject = models.CharField(max_length=256)
+    email = models.CharField(max_length=128,null=True)
+    phone = models.CharField(max_length=128,null=True)
+    note = models.TextField()
+    date = models.DateTimeField('Date',auto_now=True)
+
+    def __str__(self):
+        return self.id
+
+
