@@ -8,13 +8,8 @@
 
 {% block content %}
 
-    <table>
-        <tr><td>Name:</td><td>{{ contact.name }}</td></tr>
-        <tr><td>Date:</td><td>{{ contact.date }}</td></tr>
-        <tr><td>Subject:</td><td>{{ contact.subject }}</td></tr>
-        <tr><td>Phone:</td><td>{{ contact.phone }}</td></tr>
-        <tr><td>Note:</td><td>{{ contact.note }}</td></tr>
-    </table>
+    
+    {% include 'pages/email.html' with name=contact.name time=contact.date subject=contact.subject phone=contact.phone note=contact.note %}
     
     <a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:contact_delete' contact.id %}">Delete</a>
     

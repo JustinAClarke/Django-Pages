@@ -34,6 +34,16 @@ def getTitle(title=False):
     else:
         return "Justin Fuhrmeister-Clarke"
 
+def multiLineStr(string):
+    string = "<br />".join(string.split("\n"))
+    #return string.replace("\n","<br>\n")
+    return string
+
+def rev_multiLineStr(string):
+    string = "\n".join(string.split("<br />"))
+    #return string.replace("\n","<br>\n")
+    return string
+    
 
 def index(request):
     context = {'title':getTitle(),'request': request}
@@ -58,6 +68,8 @@ def add_page(request):
         page = PageForm(request.POST) # A form bound to the POST data
         if page.is_valid(): # All validation rules pass
             new_page = page.save()
+            new_page.content=multiLineStr(new_page.content)
+            new_page.save()
             return HttpResponseRedirect(reverse('pages:admin_list'))
     else:
         page = PageForm()
@@ -72,11 +84,14 @@ def edit_page(request,id):
         page = PageForm(request.POST,instance=page) # A form bound to the POST data
         if page.is_valid(): # All validation rules pass
             new_page = page.save()
+            new_page.content=multiLineStr(new_page.content)
+            new_page.save()
+
             return HttpResponseRedirect(reverse('pages:admin_list'))
     else:
         data={'title':page.title,
             'url':page.url,
-            'content':page.content,
+            'content':rev_multiLineStr(page.content),
         }
         page = PageForm(data)
     context = {'title':getTitle(), 'request': request,'form':page}
@@ -142,6 +157,9 @@ def contact(request):
         contact = ContactForm(request.POST) # A form bound to the POST data
         if contact.is_valid(): # All validation rules pass
             new_contact = contact.save()
+            new_contact.note=multiLineStr(new_contact.note)
+            new_contact.save()
+
             #send email
             context = {
                 'time': datetime.datetime.now().isoformat(),
@@ -149,9 +167,17 @@ def contact(request):
                 'subject': contact.cleaned_data['subject'],
                 'email': contact.cleaned_data['email'],
                 'phone': contact.cleaned_data['phone'],
-                'note': contact.cleaned_data['note'],
+                'note': multiLineStr(contact.cleaned_data['note']),
             }
             message = render_to_string('pages/email.html', context)
+            return_message = render_to_string('pages/email_sender.html', context)
+            #send client email
+            try:
+                send_mail("Contact Us Form Submitted", return_message, "info@justin.fuhrmeister-clarke.com", [contact.cleaned_data['email']])
+            except BadHeaderError:
+                messages.add_message(request, messages.ERROR, 'form Submission Failed')
+
+            #send my email
             try:
                 send_mail("Website Contact Us", message, "website@justin.fuhrmeister-clarke.com", ['info@justin.fuhrmeister-clarke.com'])
             except BadHeaderError:
@@ -163,7 +189,7 @@ def contact(request):
             return HttpResponseRedirect(reverse('pages:index'))
     else:
         contact = ContactForm()
-    context = {'title':getTitle(), 'request': request,'form':contact}
+    context = {'title':getTitle('Contact'), 'request': request,'form':contact}
     return render(request, 'pages/contact.html', context)
 
 
