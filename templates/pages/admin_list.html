@@ -1,30 +1,55 @@
 {% extends "pages/base.html" %}
 
 {% block content %}
-<ul>
-    <li><a href="#pages">Quick Jump to Pages</a></li>
-    <li><a href="#nav">Quick Jump to Nav Bar</a></li>
-</ul>
+<table>
+    <tr><td><a href="#pages">Quick Jump to Pages</a></td></tr>
+    <tr><td><a href="#nav">Quick Jump to Nav Bar</a></td></tr>
+    <tr><td><a href="#contacts">Quick Jump to Contacts</a></td></tr>
+</table>
 
 
+<hr>
     <a id="pages" href="{% url 'pages:add_page' %}">Add new Page</a>
-    <ul>
+    <table>
     {% for page in pages %}
-        <li>
-            <a href="{% url 'pages:edit_page' page.id %}">{{ page }}</a> - <a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:delete_page' page.id %}">Delete</a>
-        </li>
+        <tr>
+            <td><a href="{% url 'pages:edit_page' page.id %}">{{ page }}</a></td>
+            <td><a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:delete_page' page.id %}">Delete</a></td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 
+<hr>
     <a id="nav" href="{% url 'pages:add_nav' %}">Add new Nav Item</a>
-    <ul>
+    <table>
     {% for nav in navs %}
-        <li>
-            <a href="{% url 'pages:edit_nav' nav.id %}">{{ nav }}</a> - <a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:delete_nav' nav.id %}">Delete</a>
-        </li>
+        <tr>
+            <td><a href="{% url 'pages:edit_nav' nav.id %}">{{ nav }}</a></td>
+            <td><a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:delete_nav' nav.id %}">Delete</a></td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 
+<hr>
+    <a id="contacts" href="{% url 'pages:contact_list' %}">View Contacts</a>
+    <table>
+
+    {% for entry in contacts %}
+    <tr>
+        <td><a href="{% url 'pages:contact_view' entry.id %}">{{ entry.date }}</a></td>
+        <td><a href="{% url 'pages:contact_view' entry.id %}">{{ entry.name }}</a></td>
+        <td><a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:contact_delete' entry.id %}">Delete</a></td>
+    </tr>
+        
+    {% empty %}
+        <tr><td>No Contacts</td></tr>
+        
+    {% endfor %}
+
+
+
+</table>
+    
 <style>
     .delete{
     

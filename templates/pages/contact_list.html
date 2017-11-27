@@ -7,15 +7,22 @@
 
 {% block content %}
 
-<ul>
-{% for entry in contacts %}
-    <li>
-        <a href="{% url 'pages:contact_view' entry.id %}">{{ entry.date }}</a> - <a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:contact_delete' entry.id %}">Delete</a>
-    </li>
-{% empty %}
-    <li>No Contacts</li>
-{% endfor %}
-</ul>
+<table>
+
+    {% for entry in contacts %}
+    <tr>
+        <td><a href="{% url 'pages:contact_view' entry.id %}">{{ entry.date }}</a></td>
+        <td><a href="{% url 'pages:contact_view' entry.id %}">{{ entry.name }}</a></td>
+        <td><a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:contact_delete' entry.id %}">Delete</a></td>
+    </tr>
+        
+    {% empty %}
+        <tr><td>No Contacts</td></tr>
+        
+    {% endfor %}
+
+
+</table>
 
 <script>
     

@@ -54,8 +54,10 @@ def admin_list(request):
         return HttpResponseRedirect(reverse('photos:index'))
     pages = Page.objects.all().order_by('title')
     navs = Nav.objects.all().order_by('title')
+    contacts = Contact.objects.all().order_by('id')
 
-    context = {'title':getTitle(), 'request': request,'pages':pages,'navs':navs}
+
+    context = {'title':getTitle(), 'request': request,'pages':pages,'navs':navs, 'contacts':contacts}
     return render(request, 'pages/admin_list.html', context)
 
 
