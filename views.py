@@ -196,12 +196,16 @@ def contact(request):
 
 
 def contact_list(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('pages:index'))
     contacts = Contact.objects.all().order_by('id')
     context = {'title':getTitle(), 'request': request,'contacts':contacts}
     return render(request, 'pages/contact_list.html', context)
     
     
 def contact_view(request,id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('pages:index'))
     contact = get_object_or_404(Contact, pk=id)
     context = {'title':getTitle(), 'request': request,'contact':contact}
     return render(request, 'pages/contact_view.html', context)
@@ -214,6 +218,8 @@ def contact_delete(request,id):
     return HttpResponseRedirect(reverse('pages:contact_list'))
 
 def test(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('pages:index'))
     context = {'title':getTitle(),'request': request}
     return render(request, 'pages/index.html', context)
 
