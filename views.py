@@ -30,7 +30,7 @@ from .forms import *
 
 def getTitle(title=False):
     if(title):
-        return getTitle() + " - " + title
+        return getTitle() + " — " + title
     else:
         return "Justin Fuhrmeister-Clarke"
 
