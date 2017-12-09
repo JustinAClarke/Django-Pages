@@ -3,9 +3,10 @@
 {% block content %}
 <table>
     <tr><td>Name:</td><td>{{ name }}</td></tr>
-    <tr><td>Date Time:</td><td>{{ time }}</td></tr>
+    <tr><td>Date Time:</td><td>{{ time |date:"d M Y h:m a" }}</td></tr>
     <tr><td>Subject:</td><td>{{ subject }}</td></tr>
     <tr><td>Phone:</td><td>{{ phone }}</td></tr>
+    <tr><td>Email:</td><td>{{ email }}</td></tr>
     <tr><td>Note:</td><td>{% autoescape off %}{{ note }}{% endautoescape %}</td></tr>
 </table>
 

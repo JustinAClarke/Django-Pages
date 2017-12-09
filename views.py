@@ -175,13 +175,13 @@ def contact(request):
             return_message = render_to_string('pages/email_sender.html', context)
             #send client email
             try:
-                send_mail("Contact Us Form Submitted", return_message, "info@justin.fuhrmeister-clarke.com", [contact.cleaned_data['email']])
+                send_mail("Contact Us Form Submitted", "", "info@justin.fuhrmeister-clarke.com", [contact.cleaned_data['email']],html_message=return_message)
             except BadHeaderError:
                 messages.add_message(request, messages.ERROR, 'form Submission Failed')
 
             #send my email
             try:
-                send_mail("Website Contact Us", message, "website@justin.fuhrmeister-clarke.com", ['info@justin.fuhrmeister-clarke.com'])
+                send_mail("Website Contact Us", "", "website@justin.fuhrmeister-clarke.com", ['info@justin.fuhrmeister-clarke.com'],html_message=return_message)
             except BadHeaderError:
                 messages.add_message(request, messages.ERROR, 'form Submission Failed')
                 return HttpResponseRedirect(reverse('pages:contact'))

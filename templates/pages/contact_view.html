@@ -9,7 +9,7 @@
 {% block content %}
 
     
-    {% include 'pages/email.html' with name=contact.name time=contact.date subject=contact.subject phone=contact.phone note=contact.note %}
+    {% include 'pages/email.html' with name=contact.name time=contact.date email=contact.email subject=contact.subject phone=contact.phone note=contact.note %}
     
     <a class="delete pure-button button-warning" onclick="checkdelete(event)" href="{% url 'pages:contact_delete' contact.id %}">Delete</a>
     
