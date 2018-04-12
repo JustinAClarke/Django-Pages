@@ -19,6 +19,7 @@ from django.core.mail import send_mail, BadHeaderError
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.contrib import messages
+from django.conf import settings
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 import datetime
@@ -29,10 +30,14 @@ from .models import Page
 from .forms import *
 
 def getTitle(title=False):
+    string = ""
+    try:
+        string = settings.SITE_TITLE
+    except:
+        string = "Pages Title"
     if(title):
-        return getTitle() + " — " + title
-    else:
-        return "Justin Fuhrmeister-Clarke"
+        string += " - " + title
+    return string
 
 def multiLineStr(string):
     string = "<br />".join(string.split("\n"))
